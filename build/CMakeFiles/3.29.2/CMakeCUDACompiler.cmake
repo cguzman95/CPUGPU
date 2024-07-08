@@ -1,0 +1,83 @@
+set(CMAKE_CUDA_COMPILER "/usr/local/cuda-12.2/bin/nvcc")
+set(CMAKE_CUDA_HOST_COMPILER "")
+set(CMAKE_CUDA_HOST_LINK_LAUNCHER "/apps/ACC/GCC/11.4.0/bin/g++")
+set(CMAKE_CUDA_COMPILER_ID "NVIDIA")
+set(CMAKE_CUDA_COMPILER_VERSION "12.2.128")
+set(CMAKE_CUDA_DEVICE_LINKER "/usr/local/cuda-12.2/bin/nvlink")
+set(CMAKE_CUDA_FATBINARY "/usr/local/cuda-12.2/bin/fatbinary")
+set(CMAKE_CUDA_STANDARD_COMPUTED_DEFAULT "17")
+set(CMAKE_CUDA_EXTENSIONS_COMPUTED_DEFAULT "ON")
+set(CMAKE_CUDA_COMPILE_FEATURES "cuda_std_03;cuda_std_11;cuda_std_14;cuda_std_17;cuda_std_20")
+set(CMAKE_CUDA03_COMPILE_FEATURES "cuda_std_03")
+set(CMAKE_CUDA11_COMPILE_FEATURES "cuda_std_11")
+set(CMAKE_CUDA14_COMPILE_FEATURES "cuda_std_14")
+set(CMAKE_CUDA17_COMPILE_FEATURES "cuda_std_17")
+set(CMAKE_CUDA20_COMPILE_FEATURES "cuda_std_20")
+set(CMAKE_CUDA23_COMPILE_FEATURES "")
+
+set(CMAKE_CUDA_PLATFORM_ID "Linux")
+set(CMAKE_CUDA_SIMULATE_ID "GNU")
+set(CMAKE_CUDA_COMPILER_FRONTEND_VARIANT "")
+set(CMAKE_CUDA_SIMULATE_VERSION "11.4")
+
+
+
+set(CMAKE_CUDA_COMPILER_ENV_VAR "CUDACXX")
+set(CMAKE_CUDA_HOST_COMPILER_ENV_VAR "CUDAHOSTCXX")
+
+set(CMAKE_CUDA_COMPILER_LOADED 1)
+set(CMAKE_CUDA_COMPILER_ID_RUN 1)
+set(CMAKE_CUDA_SOURCE_FILE_EXTENSIONS cu)
+set(CMAKE_CUDA_LINKER_PREFERENCE 15)
+set(CMAKE_CUDA_LINKER_PREFERENCE_PROPAGATES 1)
+set(CMAKE_CUDA_LINKER_DEPFILE_SUPPORTED )
+
+set(CMAKE_CUDA_SIZEOF_DATA_PTR "8")
+set(CMAKE_CUDA_COMPILER_ABI "ELF")
+set(CMAKE_CUDA_BYTE_ORDER "LITTLE_ENDIAN")
+set(CMAKE_CUDA_LIBRARY_ARCHITECTURE "")
+
+if(CMAKE_CUDA_SIZEOF_DATA_PTR)
+  set(CMAKE_SIZEOF_VOID_P "${CMAKE_CUDA_SIZEOF_DATA_PTR}")
+endif()
+
+if(CMAKE_CUDA_COMPILER_ABI)
+  set(CMAKE_INTERNAL_PLATFORM_ABI "${CMAKE_CUDA_COMPILER_ABI}")
+endif()
+
+if(CMAKE_CUDA_LIBRARY_ARCHITECTURE)
+  set(CMAKE_LIBRARY_ARCHITECTURE "")
+endif()
+
+set(CMAKE_CUDA_COMPILER_TOOLKIT_ROOT "/usr/local/cuda-12.2")
+set(CMAKE_CUDA_COMPILER_TOOLKIT_LIBRARY_ROOT "/usr/local/cuda-12.2")
+set(CMAKE_CUDA_COMPILER_TOOLKIT_VERSION "12.2.128")
+set(CMAKE_CUDA_COMPILER_LIBRARY_ROOT "/usr/local/cuda-12.2")
+
+set(CMAKE_CUDA_ARCHITECTURES_ALL "50-real;52-real;53-real;60-real;61-real;62-real;70-real;72-real;75-real;80-real;86-real;87-real;89-real;90")
+set(CMAKE_CUDA_ARCHITECTURES_ALL_MAJOR "50-real;60-real;70-real;80-real;90")
+set(CMAKE_CUDA_ARCHITECTURES_NATIVE "90-real")
+
+set(CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES "/usr/local/cuda-12.2/targets/x86_64-linux/include")
+
+set(CMAKE_CUDA_HOST_IMPLICIT_LINK_LIBRARIES "")
+set(CMAKE_CUDA_HOST_IMPLICIT_LINK_DIRECTORIES "/usr/local/cuda-12.2/targets/x86_64-linux/lib/stubs;/usr/local/cuda-12.2/targets/x86_64-linux/lib")
+set(CMAKE_CUDA_HOST_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
+
+set(CMAKE_CUDA_IMPLICIT_INCLUDE_DIRECTORIES "/gpfs/apps/MN5/GPP/ONEAPI/2024.0.1/mkl/2024.0/include;/apps/ACC/PYTHON/3.12.1/GCC/include/python3.12;/apps/ACC/PYTHON/3.12.1/GCC/include;/usr/local/cuda-12.2/nvvm/include;/apps/ACC/NETCDF/c-4.9.2_fortran-4.6.1_cxx4-4.3.1/GCC/OPENMPI/include;/apps/ACC/PNETCDF/1.12.3/GCC/OPENMPI/include;/apps/GPP/HDF5/1.14.1-2/GCC/OPENMPI/include;/gpfs/apps/MN5/ACC/OPENMPI/4.1.5/GCC/include;/apps/ACC/GCC/11.4.0/include;/gpfs/apps/MN5/ACC/GCC/11.4.0/include/c++/11.4.0;/gpfs/apps/MN5/ACC/GCC/11.4.0/include/c++/11.4.0/x86_64-pc-linux-gnu;/gpfs/apps/MN5/ACC/GCC/11.4.0/include/c++/11.4.0/backward;/gpfs/apps/MN5/ACC/GCC/11.4.0/lib/gcc/x86_64-pc-linux-gnu/11.4.0/include;/gpfs/apps/MN5/ACC/GCC/11.4.0/lib/gcc/x86_64-pc-linux-gnu/11.4.0/include-fixed;/usr/local/include;/usr/include")
+set(CMAKE_CUDA_IMPLICIT_LINK_LIBRARIES "stdc++;m;gcc_s;gcc;c;gcc_s;gcc")
+set(CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES "/usr/local/cuda-12.2/targets/x86_64-linux/lib/stubs;/usr/local/cuda-12.2/targets/x86_64-linux/lib;/gpfs/apps/MN5/ACC/GCC/11.4.0/lib/gcc/x86_64-pc-linux-gnu/11.4.0;/gpfs/apps/MN5/ACC/GCC/11.4.0/lib/gcc;/usr/local/cuda-12.2/nvvm/lib64;/apps/ACC/GCC/11.4.0/lib64;/gpfs/apps/MN5/ACC/GCC/11.4.0/lib64;/lib64;/usr/lib64;/apps/ACC/PYTHON/3.12.1/GCC/lib;/usr/local/cuda-12.2/lib64;/usr/lib64/nvidia;/apps/ACC/NETCDF/c-4.9.2_fortran-4.6.1_cxx4-4.3.1/GCC/OPENMPI/lib;/apps/ACC/PNETCDF/1.12.3/GCC/OPENMPI/lib;/apps/GPP/HDF5/1.14.1-2/GCC/OPENMPI/lib;/gpfs/apps/MN5/GPP/ONEAPI/2024.0.1/mkl/2024.0/lib/intel64;/apps/ACC/GCC/11.4.0/lib;/gpfs/apps/MN5/ACC/GCC/11.4.0/lib")
+set(CMAKE_CUDA_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
+
+set(CMAKE_CUDA_RUNTIME_LIBRARY_DEFAULT "STATIC")
+
+set(CMAKE_LINKER "/usr/bin/ld")
+set(CMAKE_LINKER_LINK "")
+set(CMAKE_LINKER_LLD "")
+set(CMAKE_CUDA_COMPILER_LINKER "/usr/bin/ld")
+set(CMAKE_CUDA_COMPILER_LINKER_ID "GNU")
+set(CMAKE_CUDA_COMPILER_LINKER_VERSION 2.35.2)
+set(CMAKE_CUDA_COMPILER_LINKER_FRONTEND_VARIANT GNU)
+set(CMAKE_AR "/usr/bin/ar")
+set(CMAKE_RANLIB "/usr/bin/ranlib")
+set(CMAKE_MT "")
