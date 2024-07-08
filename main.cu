@@ -8,26 +8,17 @@
 #endif
 
 // CUDA kernel function
-__global__ void gpuKernel(int *d_data, int value) {
+__global__ void gpuKernel() {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    d_data[idx] = value;
     // Adding a delay (approx. 1 second)
     clock_t start = clock();
     while (clock() - start < 4000000000);
 }
 
-void cpuFunction(int rank) {
-    // Simulate some CPU work with a 1 second delay
-    clock_t start = clock();
-    printf("cpuFunction start\n");
-    while (clock() - start < 1000000);
-    //std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "CPU work done by rank " << rank << std::endl;
-}
-
 int main(int argc, char** argv) {
     // Initialize MPI
     MPI_Init(&argc, &argv);
+    clock_t start;
 
     // Get the number of processes
     int numProcs;
@@ -50,14 +41,23 @@ int main(int argc, char** argv) {
 
     // Launch GPU kernel asynchronously
     double startTime = MPI_Wtime();
-    gpuKernel<<<16, 16, 0, stream>>>(d_data, rank);
+    start = clock();
+    while (clock() - start < 1000000);
+    gpuKernel<<<16, 16, 0, stream>>>();
+    start = clock();
+    while (clock() - start < 1000000);
 
     // Do CPU work concurrently
 #ifdef NSYS
     nvtxRangePushA("CPU Code");
 #endif
     double startTime2 = MPI_Wtime();
-    cpuFunction(rank);
+    // Simulate some CPU work with a 1 second delay
+    start = clock();
+    printf("cpuFunction start\n");
+    while (clock() - start < 1000000);
+    //std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "CPU work done by rank " << rank << std::endl;
     double timeCPU = (MPI_Wtime() - startTime2);
 #ifdef NSYS
     nvtxRangePop();
