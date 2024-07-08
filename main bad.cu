@@ -3,7 +3,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#ifdef NSYS
+#ifndef NSYS
     #include "nvToolsExt.h"
 #endif
 
@@ -41,25 +41,21 @@ int main(int argc, char** argv) {
 
     // Launch GPU kernel asynchronously
     double startTime = MPI_Wtime();
-    start = clock();
-    while (clock() - start < 1000000);
     gpuKernel<<<16, 16, 0, stream>>>();
-    start = clock();
-    while (clock() - start < 1000000);
 
     // Do CPU work concurrently
-#ifdef NSYS
+#ifndef NSYS
     nvtxRangePushA("CPU Code");
 #endif
     double startTime2 = MPI_Wtime();
     // Simulate some CPU work with a 1 second delay
-    start = clock();
     printf("cpuFunction start\n");
-    while (clock() - start < 1000000);
-    //std::this_thread::sleep_for(std::chrono::seconds(1));
+    //start = clock();
+    //while (clock() - start < 1000000);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "CPU work done by rank " << rank << std::endl;
     double timeCPU = (MPI_Wtime() - startTime2);
-#ifdef NSYS
+#ifndef NSYS
     nvtxRangePop();
 #endif
 
@@ -71,15 +67,8 @@ int main(int argc, char** argv) {
     double timeCPUGPU = (MPI_Wtime() - startTime);
     printf("GPU Time %f\n",timeCPUGPU-timeCPU);
     printf("Total time: %f\n", timeCPUGPU);
-
-    // Free device memory
     cudaFree(d_data);
-
-    // Destroy the CUDA stream
     cudaStreamDestroy(stream);
-
-    // Finalize MPI
     MPI_Finalize();
-
     return 0;
 }

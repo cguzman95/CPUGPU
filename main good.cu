@@ -30,6 +30,9 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#ifndef NSYS
+    #include "nvToolsExt.h"
+#endif
 
 // Convenience function for checking CUDA runtime API results
 // can be wrapped around any runtime API call. No-op in release builds.
@@ -54,6 +57,12 @@ __global__ void kernel(float *a, int offset)
   a[i] = a[i] + sqrtf(s*s+c*c);
 }
 
+__global__ void kernel2(float *a, int offset)
+{
+  clock_t start = clock();
+  while (clock() - start < 400000000);
+}
+
 float maxError(float *a, int n) 
 {
   float maxE = 0;
@@ -66,15 +75,17 @@ float maxError(float *a, int n)
 
 int main(int argc, char **argv)
 {
-    MPI_Init(&argc, &argv);
-   // Get the number of processes
-    int numProcs;
-    MPI_Comm_size(MPI_COMM_WORLD, &numProcs);
+  
+  MPI_Init(&argc, &argv);
+  // Get the number of processes
+  int numProcs;
+  MPI_Comm_size(MPI_COMM_WORLD, &numProcs);
 
-    // Get the rank of the process
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    clock_t start;
+  // Get the rank of the process
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  
+  //clock_t start;
   const int blockSize = 256, nStreams = 4;
   const int n = 4 * 1024 * blockSize * nStreams;
   const int streamSize = n / nStreams;
@@ -130,9 +141,6 @@ int main(int argc, char **argv)
                                streamBytes, cudaMemcpyDeviceToHost,
                                stream[i]) );
   }
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-
-  cudaDeviceSynchronize;
   checkCuda( cudaEventRecord(stopEvent, 0) );
   checkCuda( cudaEventSynchronize(stopEvent) );
   checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
@@ -143,31 +151,40 @@ int main(int argc, char **argv)
   // loop over copy, loop over kernel, loop over copy
   memset(a, 0, bytes);
   checkCuda( cudaEventRecord(startEvent,0) );
-  for (int i = 0; i < nStreams; ++i)
+  for (int i = 0; i < 1; ++i)
   {
     int offset = i * streamSize;
     checkCuda( cudaMemcpyAsync(&d_a[offset], &a[offset], 
                                streamBytes, cudaMemcpyHostToDevice,
                                stream[i]) );
   }
-  for (int i = 0; i < nStreams; ++i)
+  for (int i = 0; i < 1; ++i)
   {
     int offset = i * streamSize;
-    kernel<<<streamSize/blockSize, blockSize, 0, stream[i]>>>(d_a, offset);
+    kernel2<<<streamSize/blockSize, blockSize, 0, stream[i]>>>(d_a, offset);
+    cudaStreamQuery(stream[i]);
   }
-  for (int i = 0; i < nStreams; ++i)
+#ifndef NSYS
+    nvtxRangePushA("CPU Code");
+#endif
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+#ifdef NSYS
+    nvtxRangePop();
+#endif
+  for (int i = 0; i < 1; ++i)
   {
     int offset = i * streamSize;
     checkCuda( cudaMemcpyAsync(&a[offset], &d_a[offset], 
                                streamBytes, cudaMemcpyDeviceToHost,
                                stream[i]) );
+    cudaStreamQuery(stream[i]);
   }
+  cudaDeviceSynchronize();
   checkCuda( cudaEventRecord(stopEvent, 0) );
   checkCuda( cudaEventSynchronize(stopEvent) );
   checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
   printf("Time for asynchronous V2 transfer and execute (ms): %f\n", ms);
   printf("  max error: %e\n", maxError(a, n));
-
   // cleanup
   checkCuda( cudaEventDestroy(startEvent) );
   checkCuda( cudaEventDestroy(stopEvent) );
@@ -176,8 +193,8 @@ int main(int argc, char **argv)
     checkCuda( cudaStreamDestroy(stream[i]) );
   cudaFree(d_a);
   cudaFreeHost(a);
-      // Finalize MPI
-    MPI_Finalize();
+  // Finalize MPI
+  MPI_Finalize();
 
   return 0;
 }
