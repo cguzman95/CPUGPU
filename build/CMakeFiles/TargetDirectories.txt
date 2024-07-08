@@ -1,3 +1,0 @@
-/gpfs/scratch/bsc32/bsc032815/gpupartmc/CPUGPU/build/CMakeFiles/test.dir
-/gpfs/scratch/bsc32/bsc032815/gpupartmc/CPUGPU/build/CMakeFiles/edit_cache.dir
-/gpfs/scratch/bsc32/bsc032815/gpupartmc/CPUGPU/build/CMakeFiles/rebuild_cache.dir

@@ -22,9 +22,9 @@ run_ncu(){
 
 run_nsys(){
   #profile must run in allocated node
-  /apps/ACC/NVIDIA-HPC-SDK/23.9/Linux_x86_64/23.9/profilers/Nsight_Systems/bin/nsys profile -f true -o ../profile ./test
+  /apps/ACC/NVIDIA-HPC-SDK/23.9/Linux_x86_64/23.9/profilers/Nsight_Systems/bin/nsys profile -f true --trace=mpi,cuda,nvtx,opengl,osrt --mpi-impl=openmpi -o ../profile mpirun -np 1 ./test
 }
 
-#run
+run
 #run_ncu
-run_nsys
+#run_nsys

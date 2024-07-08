@@ -1,0 +1,8 @@
+**/.DS_Store
+**/*.pyc
+CMakeCache.txt
+CMakeFiles/
+build/*
+.vscode/
+
+/build
